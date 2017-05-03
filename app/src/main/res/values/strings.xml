@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">DroneApp</string>
+    <string name="title_activity_maps">Drone</string>
+</resources>
