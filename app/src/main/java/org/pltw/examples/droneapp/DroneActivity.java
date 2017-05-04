@@ -1,5 +1,6 @@
 package org.pltw.examples.droneapp;
 
+import android.app.Dialog;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -11,13 +12,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parrot.arsdk.ARSDK;
 
 
 public class DroneActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
     private Double Lat;
-    private Double Long;
+    private Double Lng;
+    private Dialog startDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +30,12 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        Location location = new Location();
-        location.getLatitude()
+        ARSDK.loadSDKLibs();
+        Location currentLocation = new Location("Project Fi");
+        Lat = currentLocation.getLatitude();
+        Lng = currentLocation.getLongitude();
+
+        startDialog.show();
     }
 
 
@@ -46,8 +53,8 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         // Add a marker at Current Location and move the camera
-        LatLng currentLocation = new LatLng();
-        mMap.addMarker(new MarkerOptions().position(currentLocation).title("Marker at Current Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+        LatLng currentLocationMarker = new LatLng(Lat, Lng);
+        mMap.addMarker(new MarkerOptions().position(currentLocationMarker).title("Marker at Current Location"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocationMarker));
     }
 }
