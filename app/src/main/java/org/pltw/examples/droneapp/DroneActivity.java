@@ -1,9 +1,13 @@
 package org.pltw.examples.droneapp;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -13,10 +17,24 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parrot.arsdk.ARSDK;
+import com.parrot.arsdk.ardiscovery.ARDiscoveryDeviceService;
 
 
 public class DroneActivity extends FragmentActivity implements OnMapReadyCallback {
+    private static final String TAG = "BebopActivity";
+    private Drone mDrone;
 
+    private ProgressDialog mConnectionProgressDialog;
+    private ProgressDialog mDownloadProgressDialog;
+
+    //private BebopVideoView mVideoView;
+
+    private TextView mBatteryLabel;
+    //private Button mTakeOffLandBt;
+    //private Button mDownloadBt;
+
+    private int mNbMaxDownload;
+    private int mCurrentDownloadIndex;
     private GoogleMap mMap;
     private Double Lat;
     private Double Lng;
@@ -30,6 +48,12 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        initIHM();
+
+        Intent intent = getIntent();
+        ARDiscoveryDeviceService service = intent.getParcelableExtra(DeviceListActivity.EXTRA_DEVICE_SERVICE);
+        mDrone = new Drone(this, service);
+        mDrone.addListener(mDroneListener);
         ARSDK.loadSDKLibs();
         Location currentLocation = new Location("Project Fi");
         Lat = currentLocation.getLatitude();
@@ -57,4 +81,5 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
         mMap.addMarker(new MarkerOptions().position(currentLocationMarker).title("Marker at Current Location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocationMarker));
     }
+
 }
