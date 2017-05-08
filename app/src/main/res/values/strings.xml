@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">DroneApp</string>
     <string name="title_activity_maps">Drone</string>
+    <string name="start_dialog">This app is a drone delivery system. Choose a spot on the map, and your drone will fly to 100 meters, fly to the location you selected, and land.
+        It is made for Parrot Bebop Drones, and is highly experimental. I am not responsible for any damages to your drone or property. By continuing, you agree to these terms.</string>
+    <string name="continue_app">Continue</string>
+    <string name="exit_app">Exit</string>
 </resources>

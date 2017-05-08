@@ -1,5 +1,6 @@
 package org.pltw.examples.droneapp;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -49,7 +50,6 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private Double Lat;
     private Double Lng;
-    private Dialog startDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +68,8 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
         Location currentLocation = new Location("Project Fi");
         Lat = currentLocation.getLatitude();
         Lng = currentLocation.getLongitude();
-
-        startDialog.show();
+        StartDialogFragment startDialogFragment = new StartDialogFragment();
+        startDialogFragment.show(getFragmentManager(), "start");
     }
 
 
