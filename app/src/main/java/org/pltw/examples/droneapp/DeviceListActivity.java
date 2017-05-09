@@ -77,6 +77,8 @@ public class DeviceListActivity extends AppCompatActivity {
                 ARDISCOVERY_PRODUCT_ENUM product = ARDiscoveryService.getProductFromProductID(service.getProductID());
                 switch (product) {
                     case ARDISCOVERY_PRODUCT_ARDRONE:
+                        intent = new Intent(DeviceListActivity.this, DroneActivity.class);
+                        break;
                     case ARDISCOVERY_PRODUCT_BEBOP_2:
                         intent = new Intent(DeviceListActivity.this, DroneActivity.class);
                         break;

@@ -28,8 +28,10 @@ import com.parrot.arsdk.arcontroller.ARCONTROLLER_DEVICE_STATE_ENUM;
 import com.parrot.arsdk.arcontroller.ARControllerCodec;
 import com.parrot.arsdk.arcontroller.ARFrame;
 import com.parrot.arsdk.ardiscovery.ARDiscoveryDeviceService;
+import com.parrot.arsdk.ardiscovery.ARDiscoveryService;
 
 import static com.parrot.arsdk.arcommands.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_ENUM.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_HOVERING;
+import static com.parrot.arsdk.ardiscovery.ARDISCOVERY_PRODUCT_ENUM.ARDISCOVERY_PRODUCT_ARDRONE;
 
 
 public class DroneActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -62,7 +64,7 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
         initIHM();
 
         Intent intent = getIntent();
-        ARDiscoveryDeviceService service = intent.getParcelableExtra(DeviceListActivity.EXTRA_DEVICE_SERVICE);
+
         mDrone = new Drone(this, service);
         mDrone.addListener(mDroneListener);
         Location currentLocation = new Location("Project Fi");
