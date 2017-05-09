@@ -2,3 +2,4 @@ I will be placing journal entries in here for my CSA class.
 5/3/17 - Successfully implemented Google Maps API
 5/4/17 - Worked on Parrot SDK and Startup Dialog
 5/5/17 - Continued to implement Parrot's code
+5/8/17 - Worked on Startup Dialog/EULA
