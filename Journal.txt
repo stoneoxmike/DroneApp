@@ -3,3 +3,5 @@ I will be placing journal entries in here for my CSA class.
 5/4/17 - Worked on Parrot SDK and Startup Dialog
 5/5/17 - Continued to implement Parrot's code
 5/8/17 - Worked on Startup Dialog/EULA
+5/9/17 - Worked on Bug Fixing
+5/10/17 - Worked on Bug Fixing
