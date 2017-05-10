@@ -199,7 +199,7 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
     private ARDiscoveryDevice createDiscoveryDevice(@NonNull ARDiscoveryDeviceService service) {
         ARDiscoveryDevice device = null;
         try {
-            device = new ARDiscoveryDevice(getApplicationContext(), service);
+            device = new ARDiscoveryDevice(this, service);
         } catch (ARDiscoveryException e) {
             Log.e(TAG, "Exception", e);
         }
