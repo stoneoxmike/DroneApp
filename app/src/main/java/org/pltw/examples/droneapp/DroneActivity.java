@@ -68,9 +68,9 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
     private BroadcastReceiver mArdiscoveryServicesDevicesListUpdatedReceiver;
     private ARDiscoveryDeviceService mDeviceService;
     private ARDeviceController deviceController;
-    private ARDiscoveryDevice device;
     private ARDiscoveryService mArdiscoveryService;
     private ServiceConnection mArdiscoveryServiceConnection;
+    private DroneActivity droneActivity;
     private final ARDiscoveryServicesDevicesListUpdatedReceiverDelegate mDiscoveryDelegate =
             new ARDiscoveryServicesDevicesListUpdatedReceiverDelegate() {
 
@@ -78,16 +78,45 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
                 public void onServicesDevicesListUpdated() {
                     if (mArdiscoveryService != null) {
                         List<ARDiscoveryDeviceService> deviceList = mArdiscoveryService.getDeviceServicesArray();
+                        if (deviceList.size() >= 1){
                         mDeviceService = deviceList.get(0);
+                        ARDiscoveryDevice discoveryDevice = createDiscoveryDevice(mDeviceService);
+                        if (discoveryDevice != null) {
+                            try
+                            {
+                                deviceController = new ARDeviceController(discoveryDevice);
+
+                                Log.i(TAG, deviceController.toString());
+                                discoveryDevice.dispose();
+                            }
+                            catch (ARControllerException e)
+
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                        // your class should implement ARDeviceControllerListener
+                        initTakeoff();
                         // Do what you want with the device list
+                    }
                     }
                 }
             };
+
+    private void initTakeoff(){
+        deviceController.addListener(this);
+        deviceController.start();
+        Log.i(TAG, getPilotingState().toString());
+        takeoff();
+        Log.i(TAG, mDeviceService.getDevice().toString());
+    }
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        droneActivity = this;
         setContentView(R.layout.activity_drone);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -100,25 +129,8 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
         startDialogFragment.show(getFragmentManager(), "start");
         ARSDK.loadSDKLibs();
         initDiscoveryService();
-        registerReceivers();
-        ARDiscoveryDevice discoveryDevice = createDiscoveryDevice(mDeviceService);
-        if (discoveryDevice != null) {
-            try
-            {
-                deviceController = new ARDeviceController(device);
-                discoveryDevice.dispose();
-            }
-            catch (ARControllerException e)
-            {
-                e.printStackTrace();
-            }
-        }
-        // your class should implement ARDeviceControllerListener
-        deviceController.addListener (this);
-        ARCONTROLLER_ERROR_ENUM error = deviceController.start();
 
 
-        takeoff();
     }
 
 
@@ -153,8 +165,9 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
                 @Override
                 public void onServiceConnected(ComponentName name, IBinder service)
                 {
+                    Log.i(TAG, "OnServiceConnected");
                     mArdiscoveryService = ((ARDiscoveryService.LocalBinder) service).getService();
-
+                    mArdiscoveryService.wifiAvailable(true);
                     startDiscovery();
                 }
 
@@ -170,7 +183,9 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
         {
             // if the discovery service doesn't exists, bind to it
             Intent i = new Intent(getApplicationContext(), ARDiscoveryService.class);
-            getApplicationContext().bindService(i, mArdiscoveryServiceConnection, Context.BIND_AUTO_CREATE);
+            Boolean result = getApplicationContext().bindService(i, mArdiscoveryServiceConnection, Context.BIND_AUTO_CREATE);
+            Log.i("ServiceBound", result.toString());
+
         }
         else
         {
@@ -184,6 +199,7 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
         if (mArdiscoveryService != null)
         {
             mArdiscoveryService.start();
+            registerReceivers();
         }
     }
     private void registerReceivers()
@@ -193,6 +209,8 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
         LocalBroadcastManager localBroadcastMgr = LocalBroadcastManager.getInstance(getApplicationContext());
         localBroadcastMgr.registerReceiver(receiver,
                 new IntentFilter(ARDiscoveryService.kARDiscoveryServiceNotificationServicesDevicesListUpdated));
+
+
     }
 
 
@@ -206,6 +224,7 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
 
         return device;
     }
+
     private void unregisterReceivers()
     {
         LocalBroadcastManager localBroadcastMgr = LocalBroadcastManager.getInstance(getApplicationContext());
@@ -302,6 +321,7 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
             }
             catch (ARControllerException e)
             {
+                Log.i("RARG", "rip, you got an error" + e.getMessage());
                 e.printStackTrace();
             }
 
@@ -312,6 +332,8 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
 
     private void takeoff()
     {
+        Log.e("BLARG", getPilotingState().toString());
+        /*
         if (ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_ENUM.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_LANDED.equals(getPilotingState()))
         {
             ARCONTROLLER_ERROR_ENUM error = deviceController.getFeatureARDrone3().sendPilotingTakeOff();
@@ -319,8 +341,9 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
             if (!error.equals(ARCONTROLLER_ERROR_ENUM.ARCONTROLLER_OK))
             {
                 ARSALPrint.e(TAG, "Error while sending take off: " + error);
+                Log.i(TAG, "Error taking off");
             }
-        }
+        }*/
     }
 
     private void land()

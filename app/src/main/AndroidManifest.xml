@@ -37,14 +37,16 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <service android:name="com.parrot.arsdk.ardiscovery.ARDiscoveryService"
+            android:enabled="true"></service>
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    ...
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- Needed only if your app targets Android 5.0 (API level 21) or higher. -->
     <uses-feature android:name="android.hardware.location.gps" />
-    ...
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
