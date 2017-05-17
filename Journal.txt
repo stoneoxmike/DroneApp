@@ -6,3 +6,5 @@ I will be placing journal entries in here for my CSA class.
 5/9/17 - Worked on Bug Fixing
 5/10/17 - Worked on Bug Fixing
 5/11/17 - Worked on Bug Fixing
+5/16/17 - Different Bug Fixing
+5/17/17 - Stack Overflow
