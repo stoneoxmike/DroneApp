@@ -149,6 +149,7 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
 
         // Add a marker at Current Location and move the camera
         LatLng currentLocationMarker = new LatLng(Lat, Lng);
+        Log.e(TAG, Lat.toString());
         mMap.addMarker(new MarkerOptions().position(currentLocationMarker).title("Marker at Current Location"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocationMarker));
     }
@@ -202,6 +203,7 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
             registerReceivers();
         }
     }
+
     private void registerReceivers()
     {
         ARDiscoveryServicesDevicesListUpdatedReceiver receiver =
@@ -212,7 +214,6 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
 
 
     }
-
 
     private ARDiscoveryDevice createDiscoveryDevice(@NonNull ARDiscoveryDeviceService service) {
         ARDiscoveryDevice device = null;
@@ -265,7 +266,6 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
                 break;
             case ARCONTROLLER_DEVICE_STATE_STOPPING:
                 break;
-
             default:
                 break;
         }
@@ -333,7 +333,6 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
     private void takeoff()
     {
         Log.e("BLARG", getPilotingState().toString());
-        /*
         if (ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_ENUM.ARCOMMANDS_ARDRONE3_PILOTINGSTATE_FLYINGSTATECHANGED_STATE_LANDED.equals(getPilotingState()))
         {
             ARCONTROLLER_ERROR_ENUM error = deviceController.getFeatureARDrone3().sendPilotingTakeOff();
@@ -343,7 +342,7 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
                 ARSALPrint.e(TAG, "Error while sending take off: " + error);
                 Log.i(TAG, "Error taking off");
             }
-        }*/
+        }
     }
 
     private void land()
@@ -360,6 +359,5 @@ public class DroneActivity extends FragmentActivity implements OnMapReadyCallbac
             }
         }
     }
-
 }
 
