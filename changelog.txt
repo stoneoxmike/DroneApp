@@ -1,0 +1,11 @@
+v0.0.1 - 5/5/17
+  - Implemented Google Maps API and Parrot SDK
+v0.0.2 - 5/10/17
+  - Created StartDialogFragment.java
+  - Added String resources to Strings.xml
+  - Bug Fixes
+v0.0.3 - 5/12/17
+  - Fixed Drone Connection Problems
+  - Bug Fixes
+v0.0.4 - 5/17/17
+  - Bug Fixes
